@@ -7,6 +7,8 @@
 # Setup dalvik vm configs
 $(call inherit-product, frameworks/native/build/phone-xhdpi-4096-dalvik-heap.mk)
 
+-include vendor/lineage-priv/keys/keys.mk
+
 # Overlay
 DEVICE_PACKAGE_OVERLAYS += \
     $(LOCAL_PATH)/overlay \
@@ -246,6 +248,10 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_PACKAGES += \
     libion.vendor
+
+# Init
+PRODUCT_PACKAGES += \
+    fstab.qcom_ramdisk \
 
 # Input
 PRODUCT_COPY_FILES += \
