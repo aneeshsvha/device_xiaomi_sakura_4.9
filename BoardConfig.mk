@@ -65,7 +65,6 @@ TARGET_USES_HWC2 := true
 # Filesystem
 TARGET_FS_CONFIG_GEN := $(DEVICE_PATH)/config.fs
 BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
-BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 
 # FM
 BOARD_HAVE_QCOM_FM := true
@@ -90,9 +89,9 @@ TARGET_RECOVERY_DEVICE_MODULES := libinit_msm8953
 
 # Kernel
 BOARD_KERNEL_BASE := 0x80000000
-BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 androidboot.bootdevice=7824900.sdhci earlycon=msm_hsl_uart,0x78af000
+BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.park=3 lpm_levels.sleep_disabled=1 earlycon=msm_hsl_uart,0x78af000
 BOARD_KERNEL_CMDLINE += loop.max_part=7
-BOARD_KERNEL_CMDLINE += androidboot.boot_devices=soc/7824900.sdhci
+BOARD_KERNEL_CMDLINE += androidboot.init_fatal_reboot_target=recovery
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 BOARD_KERNEL_PAGESIZE :=  2048
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000 --tags_offset 0x00000100
@@ -101,13 +100,28 @@ TARGET_KERNEL_CONFIG := msm8953-perf_defconfig xiaomi/xiaomi.config xiaomi/sakur
 
 # Partitions
 BOARD_BOOTIMAGE_PARTITION_SIZE := 67108864
-BOARD_SYSTEMIMAGE_PARTITION_SIZE := 3221225472
 BOARD_PERSISTIMAGE_PARTITION_SIZE := 33554432
 BOARD_CACHEIMAGE_PARTITION_SIZE := 268435456
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 67108864
-BOARD_VENDORIMAGE_PARTITION_SIZE := 872415232
 
-TARGET_COPY_OUT_VENDOR := vendor
+#Retrofit 
+PARTITIONS := system vendor
+$(foreach p, $(call to-upper, $(PARTITIONS)), \
+    $(eval BOARD_$(p)IMAGE_FILE_SYSTEM_TYPE := ext4) \
+    $(eval TARGET_COPY_OUT_$(p) := $(call to-lower, $(p))))
+
+BOARD_SUPER_PARTITION_BLOCK_DEVICES := $(PARTITIONS)
+BOARD_SUPER_PARTITION_SYSTEM_DEVICE_SIZE := 3221225472
+BOARD_SUPER_PARTITION_VENDOR_DEVICE_SIZE := 872415232
+BOARD_SUPER_PARTITION_SIZE := 4093640704
+BOARD_SUPER_PARTITION_GROUPS := sakura_dynapart
+BOARD_SAKURA_DYNAPART_PARTITION_LIST := $(PARTITIONS)
+BOARD_SAKURA_DYNAPART_SIZE := 4089446400
+BOARD_SUPER_PARTITION_METADATA_DEVICE := system
+
+$(foreach p, $(call to-upper, $(PARTITIONS)), \
+    $(eval BOARD_$(p)IMAGE_PARTITION_RESERVED_SIZE := 100000000)) # 100 MB
+
 BOARD_FLASH_BLOCK_SIZE := 131072 # (BOARD_KERNEL_PAGESIZE * 64)
 BOARD_ROOT_EXTRA_SYMLINKS := \
     /vendor/dsp:/dsp \
@@ -131,11 +145,6 @@ TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
 
 # Recovery
 BOARD_USES_FULL_RECOVERY_IMAGE := true
-ifeq ($(TARGET_IS_LEGACY), true)
-    TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/fstab_legacy.qcom
-else
-    TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/fstab.qcom
-endif
 TARGET_USERIMAGES_USE_F2FS := true
 TARGET_USERIMAGES_USE_EXT4 := true
 
