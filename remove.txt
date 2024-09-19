@@ -1,4 +1,0 @@
-device/xiaomi
-vendor/xiaomi
-kernel/xiaomi
-hardware/xiaomi

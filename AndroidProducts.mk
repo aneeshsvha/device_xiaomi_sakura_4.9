@@ -5,9 +5,9 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/lineage_sakura.mk
+    $(LOCAL_DIR)/droidx_sakura.mk
 
 COMMON_LUNCH_CHOICES := \
-    lineage_sakura-user \
-    lineage_sakura-userdebug \
-    lineage_sakura-eng
+    droidx_sakura-user \
+    droidx_sakura-userdebug \
+    droidx_sakura-eng

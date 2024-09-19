@@ -1,3 +1,8 @@
+# Maintainer props
+ro.droidx.maintainer=obito_svha
+ro.droidx.chipset=Snapdragon 625
+ro.droidx.display_resolution=6.26" IPS LCD 1080x2280
+
 # Audio
 af.fast_track_multiplier=1
 audio.chk.cal.us=0

@@ -1,2 +1,8 @@
 # Fwk detect
 ro.vendor.qti.va_aosp.support=1
+
+# Maintainer props
+ro.droidx.maintainer=obito_svha
+ro.droidx.chipset=Snapdragon 625
+ro.droidx.display_resolution=6.26" IPS LCD 1080x2280
+
