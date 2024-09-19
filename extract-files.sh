@@ -56,12 +56,22 @@ function blob_fixup() {
         vendor/lib64/libwvhidl.so)
             "${PATCHELF}" --replace-needed "libprotobuf-cpp-lite.so" "libprotobuf-cpp-lite-v29.so" "${2}"
             ;;
+        vendor/lib/libchromaflash.so)
+            ;&
+        vendor/lib/libarcsoft_high_dynamic_range.so)
+            ;&
+        vendor/lib/libdualcameraddm.so)
+            ;&
+        vendor/lib/libseemore.so)
+            ;&
+        vendor/lib/liboptizoom.so)
+            ;&
+        vendor/lib/libubifocus.so)
+            ;&
+        vendor/lib/libvidhance.so)
+            "${PATCHELF}" --replace-needed "libstdc++.so" "libstdc++_vendor.so" "${2}"
+            ;;
     esac
-
-    # For all ELF files
-    if [[ "${1}" =~ ^.*(\.so|\/bin\/.*)$ ]]; then
-        "${PATCHELF}" --replace-needed "libstdc++.so" "libstdc++_vendor.so" "${2}"
-    fi
 }
 
 # If we're being sourced by the common script that we called,
